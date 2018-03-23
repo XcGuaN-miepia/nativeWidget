@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Confirm</title>
+</head>
+
+<body>
+    <button id="confirm_btn">点一下出confirm</button>
+</body>
+<script type="text/javascript" src="flexible.js"></script>
+<script>
+    function _confirm(title, message, callback, btnArrays) {
+        if (title == null)
+            title = "confirm";
+        _show(title, message, callback, btnArrays);
+    };
+
+    function _show(title, msg, callback, btnArrays) {
+        var _html = '';
+        if (!btnArrays) {
+            btnArrays[0] = '取消'
+            btnArrays[1] = '确定'
+        }
+        _html += '<div id="mb_box"></div><div id="confirm_wrapper"><div id="confirm_box"><div id="confirm_tit" class="fontsize34">' +
+            title + '</div>'
+        _html += '<div id="confirm_msg" class="fontsize28">' + msg + '</div></div>'
+        _html += '<div id="confirm_btns">'
+        _html += '<span class="confirm_btn" id="confirm_btn_cancel">' + btnArrays[0] + '</span>'
+        _html += '<span class="confirm_btn" id="confirm_btn_ok">' + btnArrays[1] + '</span>'
+        _html += '</div></div></div>'
+
+        var oDiv = document.createElement('div');
+        oDiv.innerHTML = _html;
+        document.body.appendChild(oDiv);
+
+        document.getElementById('confirm_btn_ok').onclick = function() {
+            _hide();
+            if (callback)
+                callback({
+                    index: 1
+                });
+        }
+
+        document.getElementById('confirm_btn_cancel').onclick = function() {
+            _hide();
+            if (callback)
+                callback({
+                    index: 0
+                });
+        }
+    }
+
+    function _hide() {
+        document.getElementById('mb_box').remove();
+        document.getElementById('confirm_wrapper').remove();
+    }
+
+    document.getElementById('confirm_btn').onclick = function() {
+        _confirm("confirm标题", "confirm消息", function(e) {
+            if (e.index == 1)
+                alert("确定")
+            else if (e.index == 0)
+                alert("取消")
+        }, ["取消", "确定"])
+    }
+</script>
+
+<style>
+    #mb_box {
+        width: 100%;
+        height: 100%;
+        z-index: 99999;
+        position: absolute;
+        filter: Alpha(opacity=60);
+        background-color: black;
+        top: 0;
+        left: 0;
+        opacity: 0.6
+    }
+    
+    #confirm_wrapper {
+        z-index: 999999;
+        width: 7.2rem;
+        position: absolute;
+        top: 30%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        background-color: White;
+        border-radius: 13px;
+        text-align: center;
+        overflow: hidden
+    }
+    
+    #confirm_box {
+        position: relative;
+        padding: .4rem;
+        background-color: white
+    }
+    
+    #confirm_box:after {
+        position: absolute;
+        top: auto;
+        right: auto;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 1px;
+        content: '';
+        -webkit-transform: scaleY(.5);
+        transform: scaleY(.5);
+        -webkit-transform-origin: 50% 100%;
+        transform-origin: 50% 100%;
+        background-color: rgba(0, 0, 0, .2);
+    }
+    
+    #confirm_tit {
+        font-weight: 500
+    }
+    
+    #confirm_msg {
+        margin-top: .1333333333rem
+    }
+    
+    #confirm_btns {
+        position: relative;
+        display: flex;
+        height: 1.17333333333rem;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center
+    }
+    
+    .confirm_btn {
+        line-height: 1.17333333333rem;
+        position: relative;
+        display: block;
+        overflow: hidden;
+        box-sizing: border-box;
+        width: 100%;
+        height: 1.1733333rem;
+        padding: 0 5px;
+        cursor: pointer;
+        text-align: center;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: #007aff;
+        background-color: rgba(255, 255, 255, .95);
+        -webkit-box-flex: 1
+    }
+    
+    #confirm_btn_cancel:after {
+        position: absolute;
+        z-index: 15;
+        top: 0;
+        right: 0;
+        bottom: auto;
+        left: auto;
+        display: block;
+        width: 1px;
+        height: 100%;
+        content: '';
+        -webkit-transform: scaleX(.5);
+        transform: scaleX(.5);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+        background-color: rgba(0, 0, 0, .2)
+    }
+    
+    [data-dpr="1"] .fontsize28 {
+        font-size: 14px;
+    }
+    
+    [data-dpr="2"] .fontsize28 {
+        font-size: 28px;
+    }
+    
+    [data-dpr="3"] .fontsize28 {
+        font-size: 42px;
+    }
+    
+    [data-dpr="1"] .fontsize34 {
+        font-size: 17px;
+    }
+    
+    [data-dpr="2"] .fontsize34 {
+        font-size: 34px;
+    }
+    
+    [data-dpr="3"] .fontsize34 {
+        font-size: 51px;
+    }
+</style>
+
+
+
+</html>
