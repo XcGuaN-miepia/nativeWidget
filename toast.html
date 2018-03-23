@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Toast</title>
+    <style>
+        @keyframes toast {
+            0% {
+                opacity: 0;
+            }
+            25% {
+                opacity: 0.7;
+            }
+            75% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        
+        @-webkit-keyframes toast
+        /*Safari and Chrome*/
+        
+        {
+            0% {
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        
+        #toast {
+            animation: toast 3s 1;
+            -webkit-animation: toast 3s 1;
+            position: fixed;
+            color: #FFF;
+            z-index: 10000;
+            opacity: 0;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+        }
+        
+        .toast_fp {
+            background: #333;
+            display: inline;
+            padding: 10px 20px;
+        }
+        
+        .toast_msg {
+            text-align: center;
+            background: #333;
+        }
+        
+        .flex-h {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+        }
+        
+        .flex-hc {
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="toast_btn">点一下出toast</button>
+</body>
+<script type="text/javascript">
+    function _toast(msg, top, callback) {
+        var _html = '';
+        _html += '<div id="toast" class="flex-h flex-hc"><div class="toast_fp">';
+        _html += '<span class="toast_msg">' + msg + '</span>';
+        _html += '</div></div>'
+
+        var oDiv = document.createElement('div');
+        oDiv.innerHTML = _html;
+        oDiv.setAttribute("id", "toast_div")
+        document.body.appendChild(oDiv);
+
+        document.getElementById('toast').style.top = top + "rem";
+
+        setTimeout(function() {
+            document.getElementById('toast_div').remove();
+        }, 3000)
+        if (callback)
+            callback();
+
+    }
+
+    document.getElementById('toast_btn').onclick = function() {
+        _toast(111, 10, function() {
+            alert("回调函数");
+        });
+    }
+</script>
+
+</html>
