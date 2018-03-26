@@ -6,35 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Confirm</title>
+    <style>
+        .test_box {
+            width: 750px;
+            height: 1334px;
+            background: #007aff;
+        }
+    </style>
 </head>
 
 <body>
     <button id="confirm_btn">点一下出confirm</button>
+    <div class="test_box"></div>
+    <div class="test_box"></div>
 </body>
 <script type="text/javascript" src="flexible.js"></script>
 <script>
+    var css = document.createElement('link');
+    css.href = "confirm.css";
+    css.rel = "stylesheet";
+    css.type = "text/css";
+    document.getElementsByTagName('head')[0].appendChild(css);
+
     function _confirm(title, message, callback, btnArrays) {
         if (title == null)
             title = "confirm";
         _show(title, message, callback, btnArrays);
+        document.getElementById('confirm_div').addEventListener('touchmove', function(event) {
+            // 判断默认行为是否可以被禁用
+            if (event.cancelable) {
+                // 判断默认行为是否已经被禁用
+                if (!event.defaultPrevented) {
+                    event.preventDefault();
+                }
+            }
+        }, false);
     };
 
     function _show(title, msg, callback, btnArrays) {
         var _html = '';
-        if (!btnArrays) {
-            btnArrays[0] = '取消'
-            btnArrays[1] = '确定'
-        }
         _html += '<div id="mb_box"></div><div id="confirm_wrapper"><div id="confirm_box"><div id="confirm_tit" class="fontsize34">' +
             title + '</div>'
         _html += '<div id="confirm_msg" class="fontsize28">' + msg + '</div></div>'
-        _html += '<div id="confirm_btns">'
+        _html += '<div id="confirm_btns" class="fontsize34">'
         _html += '<span class="confirm_btn" id="confirm_btn_cancel">' + btnArrays[0] + '</span>'
         _html += '<span class="confirm_btn" id="confirm_btn_ok">' + btnArrays[1] + '</span>'
         _html += '</div></div></div>'
 
         var oDiv = document.createElement('div');
         oDiv.innerHTML = _html;
+        oDiv.setAttribute("id", "confirm_div")
+        oDiv.setAttribute('z-index', "9999");
         document.body.appendChild(oDiv);
 
         document.getElementById('confirm_btn_ok').onclick = function() {
@@ -43,6 +65,7 @@
                 callback({
                     index: 1
                 });
+
         }
 
         document.getElementById('confirm_btn_cancel').onclick = function() {
@@ -51,12 +74,13 @@
                 callback({
                     index: 0
                 });
+
         }
+
     }
 
     function _hide() {
-        document.getElementById('mb_box').remove();
-        document.getElementById('confirm_wrapper').remove();
+        document.getElementById('confirm_div').remove();
     }
 
     document.getElementById('confirm_btn').onclick = function() {
